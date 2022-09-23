@@ -3,7 +3,7 @@ import React from 'react'
 import { SearchIcon, PlusCircleIcon } from '@heroicons/react/outline';
 import { HomeIcon } from '@heroicons/react/solid';
 
-function Header() {
+const Header = () => {
   return (
     <div className='shadow-sm border-b sticky top-0 bg-white z-30'>
       <div className='flex items-center justify-between max-w-6xl mx-4 xl:mx-auto'>
