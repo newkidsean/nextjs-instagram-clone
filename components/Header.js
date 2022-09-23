@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React from 'react'
-import { SearchIcon } from '@heroicons/react/outline'
+import { SearchIcon, PlusCircleIcon } from '@heroicons/react/outline';
+import { HomeIcon } from '@heroicons/react/solid';
 
 function Header() {
   return (
@@ -31,8 +32,15 @@ function Header() {
           </div>
           <input type='text' placeholder='Search' className='bg-gray-50 pl-10 border-gray-500 text-sm focus:ring-black focus:border-black rounded-md' />
         </div>
+
+        {/* Right */}
+        <div className='flex space-x-4 items-center'>
+          <HomeIcon className='hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-tranform duration-200 ease-out' />
+          <PlusCircleIcon className='hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-tranform duration-200 ease-out' />
+          <img src='https://upload.wikimedia.org/wikipedia/en/thumb/3/37/Jumpman_logo.svg/1200px-Jumpman_logo.svg.png' layout='fill' alt='user-image'
+            className='h-10 rounded-full cursor-pointer' />
+        </div>
       </div>
-      {/* Right */}
     </>
   )
 }
