@@ -21,7 +21,7 @@ const Header = () => {
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/800px-Instagram_logo_2016.svg.png"
             layout="fill"
             className="object-contain"
-            alt='instagram-logo'
+            alt='instagram-icon'
           />
         </div>
 
