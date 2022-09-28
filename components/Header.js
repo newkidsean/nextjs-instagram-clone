@@ -2,8 +2,13 @@ import Image from 'next/image';
 import React from 'react'
 import { SearchIcon, PlusCircleIcon } from '@heroicons/react/outline';
 import { HomeIcon } from '@heroicons/react/solid';
+// import { useSession, signIn, signOut } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 const Header = () => {
+  // const { data: session } = useSession();
+
+
   return (
     <div className='shadow-sm border-b sticky top-0 bg-white z-30'>
       <div className='flex items-center justify-between max-w-6xl mx-4 xl:mx-auto'>
@@ -36,9 +41,19 @@ const Header = () => {
         {/* Right */}
         <div className='flex space-x-4 items-center'>
           <HomeIcon className='hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-tranform duration-200 ease-out' />
-          <PlusCircleIcon className='hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-tranform duration-200 ease-out' />
-          <img src='https://upload.wikimedia.org/wikipedia/en/thumb/3/37/Jumpman_logo.svg/1200px-Jumpman_logo.svg.png' layout='fill' alt='user-image'
-            className='h-10 rounded-full cursor-pointer' />
+          {/* {session ? ( */}
+          <>
+            <PlusCircleIcon className='hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-tranform duration-200 ease-out' />
+            <img
+              // onClick={signOut}
+              src='https://upload.wikimedia.org/wikipedia/en/thumb/3/37/Jumpman_logo.svg/1200px-Jumpman_logo.svg.png'
+              // src={session.user.image}
+              layout='fill' alt='user-image'
+              className='h-10 rounded-full cursor-pointer' />
+          </>
+          {/* ) : (
+            <button onClick={signIn}>Sign in</button>
+          )} */}
         </div>
       </div>
     </div>
