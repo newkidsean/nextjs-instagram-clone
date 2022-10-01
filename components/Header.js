@@ -4,10 +4,12 @@ import { SearchIcon, PlusCircleIcon } from '@heroicons/react/outline';
 import { HomeIcon } from '@heroicons/react/solid';
 // import { useSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { useRecoilState } from 'recoil';
+import { modalState } from '../atom/modalAtom';
 
 const Header = () => {
   // const { data: session } = useSession();
-
+  const [open, setOpen] = useRecoilState(modalState);
 
   return (
     <div className='shadow-sm border-b sticky top-0 bg-white z-30'>
@@ -43,7 +45,10 @@ const Header = () => {
           <HomeIcon className='hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-tranform duration-200 ease-out' />
           {/* {session ? ( */}
           <>
-            <PlusCircleIcon className='hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-tranform duration-200 ease-out' />
+            <PlusCircleIcon
+              className='hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-tranform duration-200 ease-out'
+              onClick={() => setOpen(true)}
+            />
             <img
               // onClick={signOut}
               src='https://upload.wikimedia.org/wikipedia/en/thumb/3/37/Jumpman_logo.svg/1200px-Jumpman_logo.svg.png'
