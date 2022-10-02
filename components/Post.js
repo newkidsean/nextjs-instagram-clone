@@ -1,7 +1,12 @@
 import React from 'react';
 import { DotsHorizontalIcon, HeartIcon, ChatIcon, BookmarkIcon, EmojiHappyIcon } from '@heroicons/react/outline';
+import { userState } from '../atom/userAtom';
+import { useRecoilState } from "recoil";
 
 const Post = ({ username, img, userImg, caption, id }) => {
+  const [currentUser, setCurrentUser] = useRecoilState(userState)
+  // session 사용하는 부분을 currentUser 로 변경해야 함
+
   return (
     <div className='bg-white my-7 border rounded-md'>
       {/* Post Header */}

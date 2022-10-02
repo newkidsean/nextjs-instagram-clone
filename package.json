@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroicons/react": "v1",
+    "dotenv": "^16.0.3",
     "firebase": "^9.10.0",
     "minifaker": "^1.34.1",
     "next": "12.3.1",
