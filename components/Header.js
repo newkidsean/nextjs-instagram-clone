@@ -9,6 +9,7 @@ import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { userState } from "../atom/userAtom";
 import { db } from "../firebase";
+
 export default function Header() {
   const [open, setOpen] = useRecoilState(modalState);
   const [currentUser, setCurrentUser] = useRecoilState(userState);
@@ -48,6 +49,7 @@ export default function Header() {
             src="http://www.jennexplores.com/wp-content/uploads/2015/09/Instagram_logo_black.png"
             layout="fill"
             className="object-contain"
+            alt="instagram-logo-letter"
             onClick={() => router.push("/")}
           />
         </div>
@@ -56,6 +58,7 @@ export default function Header() {
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/800px-Instagram_logo_2016.svg.png"
             layout="fill"
             className="object-contain"
+            alt="instagram-logo"
             onClick={() => router.push("/")}
           />
         </div>
