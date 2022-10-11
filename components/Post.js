@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DotsHorizontalIcon, HeartIcon, ChatIcon, BookmarkIcon, EmojiHappyIcon } from '@heroicons/react/outline';
 import { userState } from '../atom/userAtom';
 import { useRecoilState } from "recoil";
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const Post = ({ username, img, userImg, caption, id }) => {
-  const [currentUser, setCurrentUser] = useRecoilState(userState)
+  const [currentUser, setCurrentUser] = useRecoilState(userState);
+  const [comment, setComment] = useState('');
+
+  const sendComment = async (event) => {
+    event.preventDefault();
+    const commentToSend = comment;
+    setComment('');
+    await addDoc(collection(db, 'posts', id, 'comments'), {
+      comment: commentToSend,
+      username: currentUser.username,
+      userImage: currentUser.userImg,
+      timestamp: serverTimestamp()
+    })
+  }
+
   // session 사용하는 부분을 currentUser 로 변경해야 함
 
   return (
@@ -40,8 +56,11 @@ const Post = ({ username, img, userImg, caption, id }) => {
       {currentUser && (
         <form className='flex items-center p-4'>
           <EmojiHappyIcon className='h-7' />
-          <input type='text' className='border-none flex-1 focus:ring-0' placeholder='Enter your comment...' />
-          <button className='text-blue-400 font-bold cursor:pointer'>Post</button>
+          <input
+            value={comment}
+            onChange={event => setComment(event.target.value)}
+            type='text' className='border-none flex-1 focus:ring-0' placeholder='Enter your comment...' />
+          <button type='submit' onClick={sendComment} disabled={!comment.trim()} className='text-blue-400 font-bold cursor:pointer disabled:text-blue-200'>Post</button>
         </form>
       )}
     </div >
