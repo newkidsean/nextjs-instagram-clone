@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { DotsHorizontalIcon, HeartIcon, ChatIcon, BookmarkIcon, EmojiHappyIcon } from '@heroicons/react/outline';
+import { HeartIcon as HeartIconFilled } from '@heroicons/react/solid';
 import { userState } from '../atom/userAtom';
 import { useRecoilState } from "recoil";
-import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp, setDoc, doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import Moment from 'react-moment';
 
@@ -10,13 +11,21 @@ const Post = ({ username, img, userImg, caption, id }) => {
   const [currentUser, setCurrentUser] = useRecoilState(userState);
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
+  const [hasLiked, setHasLiked] = useState(false);
+  const [likes, setLikes] = useState([]);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
       query(collection(db, 'posts', id, 'comments'), orderBy('timestamp', 'desc')), (snapShot) => setComments(snapShot.docs)
     );
 
-  }, [db, id])
+  }, [db, id]);
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, 'posts', id, 'likes'), snapShot => setLikes(snapShot.docs));
+  }, [db])
+  useEffect(() => {
+    setHasLiked(likes.findIndex(like => like.id === currentUser?.uid) !== -1);
+  }, [likes])
 
   const sendComment = async (event) => {
     event.preventDefault();
@@ -24,10 +33,20 @@ const Post = ({ username, img, userImg, caption, id }) => {
     setComment('');
     await addDoc(collection(db, 'posts', id, 'comments'), {
       comment: commentToSend,
-      username: currentUser.username,
-      userImage: currentUser.userImg,
+      username: currentUser?.username,
+      userImage: currentUser?.userImg,
       timestamp: serverTimestamp()
     })
+  }
+
+  const likePost = async () => {
+    if (hasLiked) {
+      await deleteDoc(doc(db, 'posts', id, 'likes', currentUser?.uid))
+    } else {
+      await setDoc(doc(db, 'posts', id, 'likes', currentUser?.uid), {
+        username: currentUser?.username,
+      })
+    }
   }
 
   // session 사용하는 부분을 currentUser 로 변경해야 함
@@ -50,7 +69,11 @@ const Post = ({ username, img, userImg, caption, id }) => {
       {currentUser && (
         <div className='flex justify-between px-4 pt-4'>
           <div className='flex space-x-4'>
-            <HeartIcon className='btn' />
+            {hasLiked ? (
+              <HeartIconFilled onClick={likePost} className='text-red-400 btn' />
+            ) : (
+              <HeartIcon onClick={likePost} className='btn' />
+            )}
             <ChatIcon className='btn' />
           </div>
           <BookmarkIcon className='btn' />
