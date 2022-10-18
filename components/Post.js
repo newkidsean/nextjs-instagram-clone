@@ -6,6 +6,7 @@ import { useRecoilState } from "recoil";
 import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp, setDoc, doc, deleteDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import Moment from 'react-moment';
+import Image from 'next/image';
 
 const Post = ({ username, img, userImg, caption, id }) => {
   const [currentUser, setCurrentUser] = useRecoilState(userState);
@@ -16,16 +17,26 @@ const Post = ({ username, img, userImg, caption, id }) => {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      query(collection(db, 'posts', id, 'comments'), orderBy('timestamp', 'desc')), (snapShot) => setComments(snapShot.docs)
+      query(
+        collection(db, "posts", id, "comments"),
+        orderBy("timestamp", "desc")
+      ),
+      (snapshot) => {
+        setComments(snapshot.docs);
+      }
     );
-
   }, [db, id]);
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, 'posts', id, 'likes'), snapShot => setLikes(snapShot.docs));
-  }, [db])
+    const unsubscribe = onSnapshot(
+      collection(db, "posts", id, "likes"),
+      (snapshot) => setLikes(snapshot.docs)
+    );
+  }, [db]);
   useEffect(() => {
-    setHasLiked(likes.findIndex(like => like.id === currentUser?.uid) !== -1);
-  }, [likes])
+    setHasLiked(
+      likes.findIndex((like) => like.id === currentUser?.uid) !== -1
+    );
+  }, [likes]);
 
   const sendComment = async (event) => {
     event.preventDefault();
@@ -47,23 +58,30 @@ const Post = ({ username, img, userImg, caption, id }) => {
         username: currentUser?.username,
       })
     }
-  }
-
-  // session 사용하는 부분을 currentUser 로 변경해야 함
+  };
 
   return (
     <div className='bg-white my-7 border rounded-md'>
       {/* Post Header */}
       <div className='flex items-center p-5'>
-        <img
+        <Image
           className='h-12 rounded-full object-cover border p-1 mr-3'
-          src={userImg} alt={username} />
+          src={userImg} alt={username}
+          width={30}
+          height={30}
+        />
         <p className='font-bold flex-1'>{username}</p>
         <DotsHorizontalIcon className='h-5' />
       </div>
 
       {/* Post Image */}
-      <img className='object-cover w-full' src={img} alt='' />
+      <Image
+        className='object-cover w-full'
+        src={img} alt=''
+        width={700}
+        height={800}
+
+      />
 
       {/* Post Buttons */}
       {currentUser && (
@@ -82,15 +100,21 @@ const Post = ({ username, img, userImg, caption, id }) => {
 
       {/* Post comments */}
       <p className='p-5 truncate'>
+        {likes.length > 0 && (
+          <p className='font-bold mb-1'>{likes.length} likes</p>
+        )}
         <span className='font-bold mr-2'>{username}</span>{caption}
       </p>
       {comments.length > 0 && (
         <div className='mx-10 max-h-24 overflow-y-scroll scrollbar-none'>
           {comments.map(comment => (
-            <div key={comment.data().timestamp} className='flex items-center space-x-2 mb-2'>
-              <img
+            <div key={comment.data().id} className='flex items-center space-x-2 mb-2'>
+              <Image
                 className='h-7 rounded-full object-cover'
-                src={comment.data().userImage} alt='user-image' />
+                src={comment.data().userImage} alt='user-image'
+                height={25}
+                width={25}
+              />
               <p className='font-semibold'>{comment.data().username}</p>
               <p className='flex-1 truncate'>{comment.data().comment}</p>
               <Moment fromNow >{comment.data().timestamp?.toDate()}</Moment>

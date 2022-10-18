@@ -4,9 +4,10 @@ import { useRecoilState } from 'recoil';
 import Modal from 'react-modal';
 import { CameraIcon } from '@heroicons/react/outline';
 import { userState } from '../atom/userAtom';
-import { addDoc, collection, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp, updateDoc, doc } from 'firebase/firestore';
 import { db, storage } from '../firebase';
 import { getDownloadURL, ref, uploadString } from 'firebase/storage';
+import Image from 'next/image';
 
 const UploadModal = () => {
   const [open, setOpen] = useRecoilState(modalState);
@@ -32,23 +33,22 @@ const UploadModal = () => {
 
     setLoading(true);
 
-    const docRef = await addDoc(collection(db, 'posts'), {
+    const docRef = await addDoc(collection(db, "posts"), {
       caption: captionRef.current.value,
-      username: currentUser.username,
+      username: currentUser?.username,
       profileImg: currentUser.userImg,
-      timestamp: serverTimestamp()
+      timestamp: serverTimestamp(),
     });
     const imageRef = ref(storage, `posts/${docRef.id}/image`);
 
-    await uploadString(imageRef, selectedFile, 'data_url')
-      .then(
-        async (snapshot) => {
-          const downloadURL = await getDownloadURL(imageRef);
-          await updateDoc(doc(db, 'posts', docRef.id), {
-            image: downloadURL,
-          })
-        }
-      )
+    await uploadString(imageRef, selectedFile, "data_url").then(
+      async (snapshot) => {
+        const downloadURL = await getDownloadURL(imageRef);
+        await updateDoc(doc(db, "posts", docRef.id), {
+          image: downloadURL,
+        });
+      }
+    );
     setOpen(false);
     setLoading(false);
     setSelectedFile(null);
@@ -66,7 +66,9 @@ const UploadModal = () => {
         >
           <div className="flex flex-col justify-center items-center h-[100%]">
             {selectedFile ? (
-              <img
+              <Image
+                height={120}
+                width={120}
                 onClick={() => setSelectedFile(null)}
                 src={selectedFile}
                 alt=""
