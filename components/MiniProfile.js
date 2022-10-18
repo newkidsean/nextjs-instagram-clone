@@ -1,12 +1,10 @@
 import React from 'react';
-// import { useSession, signOut } from 'next-auth/react';
 import { userState } from '../atom/userAtom';
 import { useRecoilState } from "recoil";
 import { getAuth, signOut } from 'firebase/auth';
 import Image from 'next/image';
 
 const MiniProfile = () => {
-  // const { data: session } = useSession();
   const [currentUser, setCurrentUser] = useRecoilState(userState);
   const auth = getAuth();
 

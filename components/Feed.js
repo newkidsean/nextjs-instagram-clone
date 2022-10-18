@@ -3,12 +3,10 @@ import MiniProfile from './MiniProfile';
 import Posts from './Posts';
 import Stories from './Stories';
 import Suggestions from './Suggestions';
-// import { useSession } from 'next-auth/react';
 import { userState } from '../atom/userAtom';
 import { useRecoilState } from "recoil";
 
 const Feed = () => {
-  // const { data: session } = useSession();
   const [currentUser] = useRecoilState(userState);
   return (
     <main className={`grid ${currentUser ? 'grid-cols-1 md:grid-cols-3 md:max-w-6xl mx-auto' : 'grid-cols-1 md:grid-cols-2 md:max-w-3xl mx-auto'}`}>

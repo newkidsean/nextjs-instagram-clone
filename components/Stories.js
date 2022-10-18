@@ -2,13 +2,11 @@ import React, { useEffect, useState } from 'react';
 import minifaker from 'minifaker';
 import 'minifaker/locales/en';
 import Story from './Story';
-// import { useSession } from 'next-auth/react';
 import { userState } from '../atom/userAtom';
 import { useRecoilState } from "recoil";
 
 const Stories = () => {
   const [storyUsers, setStoryUsers] = useState([]);
-  // const { data: session } = useSession();
   const [currentUser, setCurrentUser] = useRecoilState(userState)
 
   useEffect(() => {

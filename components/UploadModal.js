@@ -12,7 +12,6 @@ import Image from 'next/image';
 const UploadModal = () => {
   const [open, setOpen] = useRecoilState(modalState);
   const [selectedFile, setSelectedFile] = useState(null);
-  // 추후 docRef 로직 구성할 때 session 대신 currentUSer 사용하기
   const [currentUser] = useRecoilState(userState);
   const [loading, setLoading] = useState(false);
 
