@@ -8,8 +8,9 @@ const Posts = () => {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      query(collection(db, 'posts'), orderBy('timestamp', 'desc')), (snapshot) => {
-        setPosts(snapshot.docs)
+      query(collection(db, "posts"), orderBy("timestamp", "desc")),
+      (snapshot) => {
+        setPosts(snapshot.docs);
       }
     );
     return unsubscribe;
@@ -17,14 +18,14 @@ const Posts = () => {
 
   return (
     <div>
-      {posts.map(post => (
+      {posts.map((post) => (
         <Post
           key={post.id}
           id={post.id}
           username={post.data().username}
           userImg={post.data().profileImg}
           img={post.data().image}
-          caption={post.dataI().caption}
+          caption={post.data().caption}
         />
       ))}
     </div>

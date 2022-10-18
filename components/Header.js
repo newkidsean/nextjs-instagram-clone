@@ -15,6 +15,7 @@ export default function Header() {
   const [currentUser, setCurrentUser] = useRecoilState(userState);
   const router = useRouter();
   const auth = getAuth();
+  console.log('current user in HEADER :', currentUser);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -82,17 +83,19 @@ export default function Header() {
             onClick={() => router.push("/")}
             className="hidden md:inline-flex  h-6 cursor-pointer hover:scale-125 transition-tranform duration-200 ease-out"
           />
-          {currentUser ? (
+          {currentUser !== null ? (
             <>
               <PlusCircleIcon
                 onClick={() => setOpen(true)}
                 className="h-6 cursor-pointer hover:scale-125 transition-tranform duration-200 ease-out"
               />
-              <img
+              <Image
                 onClick={onSignOut}
                 src={currentUser?.userImg}
                 alt="user-image"
                 className="h-10 rounded-full cursor-pointer"
+                height={20}
+                width={20}
               />
             </>
           ) : (

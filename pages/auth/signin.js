@@ -4,6 +4,7 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 const Signin = () => {
   const router = useRouter();
@@ -14,7 +15,7 @@ const Signin = () => {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
       const user = auth.currentUser.providerData[0];
-      const docRef = doc(db, 'users', user.uid);
+      const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
         await setDoc(docRef, {
@@ -23,8 +24,8 @@ const Signin = () => {
           userImg: user.photoURL,
           uid: user.uid,
           timestamp: serverTimestamp(),
-          username: user.displayName.split(' ').join('').toLocaleLowerCase()
-        })
+          username: user.displayName.split(" ").join("").toLocaleLowerCase(),
+        });
       }
       console.log('auth :', auth);
       router.push('/')
@@ -36,17 +37,21 @@ const Signin = () => {
     <>
       <Header />
       <div className="flex justify-center space-x-7 mt-20">
-        <img
+        <Image
           className="hidden object-cover rotate-6 md:inline-flex md:w-48"
           src="https://superviral.com.au/wp-content/uploads/2021/08/instagix-banner-graphic.png"
           alt="instagram-image"
+          height={130}
+          width={130}
         />
         <div className="">
           <div className="flex flex-col items-center">
-            <img
+            <Image
               className="w-32 object-cover"
               src="https://socodigital.com/wp-content/uploads/2021/03/Instagram.png"
               alt=""
+              height={60}
+              width={60}
             />
             <p className="text-sm italic my-10 text-center">
               This app is created for learning purposes

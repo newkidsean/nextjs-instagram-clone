@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import minifaker from 'minifaker';
+import Image from 'next/image';
 
 const Suggestions = () => {
   const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
-    const suggestions = minifaker.array(5, (i) => (
-      {
-        username: minifaker.username({ locale: 'en' }).toLowerCase(),
-        jobTitle: minifaker.jobTitle(),
-        id: i,
-      }
-    ))
+    const suggestions = minifaker.array(5, (i) => ({
+      username: minifaker.username({ locale: "en" }).toLowerCase(),
+      jobTitle: minifaker.jobTitle(),
+      id: i,
+    }));
     setSuggestions(suggestions);
   }, []);
+
   return (
     <div className='mt-4 ml-10'>
       <div className='flex justify-between mb-5 text-sm'>
@@ -22,7 +22,10 @@ const Suggestions = () => {
       </div>
       {suggestions.map(suggestion => (
         <div key={suggestion.id} className='flex items-center justify-between mt-3'>
-          <img className='h-10 rounded-full border p-[2px]'
+          <Image
+            height={30}
+            width={30}
+            className='h-10 rounded-full border p-[2px]'
             src={`https://i.pravatar.cc/150?img=${Math.ceil(Math.random() * 70)}`} alt='' />
           <div className='flex-1 ml-4'>
             <h2 className='font-semibold text-sm'>{suggestion.username}</h2>
